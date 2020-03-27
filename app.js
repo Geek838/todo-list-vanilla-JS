@@ -1,23 +1,24 @@
 const field = document.querySelector('#field');
-const addBtn= document.querySelector('#add');
+const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
 
+addBtn.addEventListener('click', add);
 
-function add(e){
-    let item = document.createElement('li');
-    item.innerHTML = `${field.value} <button class="remove">Remove</button>`;
-    list.append(item);
-    let removeBtns = document.querySelectorAll('.remove');
-    removeBtns.forEach((e,idx)=>{
-        e.addEventListener('click',function(){
-            list.children[idx].remove()
-            
+function add() {
+    if (field.value) {
+        let item = document.createElement('li');
+        item.innerHTML = field.value;
+        list.append(item);
+        let rmvBtn = document.createElement('button')
+        rmvBtn.classList.add('remove');
+        rmvBtn.innerHTML = 'remove';
+        rmvBtn.addEventListener('click', () => {
+            item.parentNode.removeChild(item);
         })
-    })
-        
+        item.append(rmvBtn);
+        field.value = '';
+    } else {
+        return
     }
-    
-  
 
-  
-  addBtn.addEventListener('click',add);
+}
