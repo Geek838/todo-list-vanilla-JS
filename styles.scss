@@ -1,0 +1,63 @@
+$font: 'Montserrat',
+sans-serif;
+
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-size: 18px;
+
+    background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+
+    * {
+        box-sizing: border-box;
+    }
+
+    h2 {
+        text-align: center;
+        font-family: $font;
+        margin-top: 50px;
+    }
+
+    button{
+        background-color: #5FFBF1;
+        border-radius: 10%;
+        border: none;
+        font-size: 18px;
+        margin: 0 2px;
+    }
+
+    .todo-list {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                min-width: 10%;
+                max-width: 30%;
+                display: flex;
+                margin: 20px 10px 0;
+                text-align: center;
+
+            }
+            span{
+                font-family: $font;
+            }
+            
+        }
+
+
+
+        .done {
+            text-decoration: line-through;
+        }
+    }
+}
