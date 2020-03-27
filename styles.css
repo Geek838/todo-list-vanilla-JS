@@ -27,6 +27,7 @@ body button {
 }
 
 body .todo-list {
+  margin: 0 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -37,9 +38,15 @@ body .todo-list {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  height: 400px;
+  width: 400px;
+  overflow-y: auto;
 }
 
 body .todo-list ul {
@@ -64,5 +71,9 @@ body .todo-list ul span {
 
 body .todo-list .done {
   text-decoration: line-through;
+}
+
+body .todo-list .current {
+  display: block;
 }
 /*# sourceMappingURL=styles.css.map */
