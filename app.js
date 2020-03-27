@@ -10,8 +10,8 @@ function add(e){
     let removeBtns = document.querySelectorAll('.remove');
     removeBtns.forEach((e,idx)=>{
         e.addEventListener('click',function(){
-            console.log(e.parentElement)
             list.children[idx].remove()
+            
         })
     })
         
