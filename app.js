@@ -35,7 +35,9 @@ function add(e) {
                 editInput.style.display = 'inline-block';
                 editInput.addEventListener('keyup', (e) => {
                     if (e.keyCode == 13) {
-                        span.innerHTML = editInput.value;
+                        if(editInput.value.trim() != 0){
+                            span.innerHTML = editInput.value;
+                        } 
                         span.style.display = '';
                         editInput.style.display = 'none';
                         checkBtn.style.display = ""
