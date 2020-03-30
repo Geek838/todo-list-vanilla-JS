@@ -1,6 +1,8 @@
 const field = document.querySelector('#field');
 const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
+const check = document.querySelector('#complete')
+const deleteMarked = document.querySelector('#delete');
 
 let todoList = [];
 let pageCount = 1;
@@ -12,22 +14,63 @@ addBtn.addEventListener('click', addToList)
 
 field.addEventListener('keyup', addToList)
 
+check.addEventListener('click', () => {
+    for (child of list.children) {
+        child.children[0].classList.toggle('done');
+    }
+    markAll(todoList);
+});
+
+deleteMarked.addEventListener('click',()=>{
+    deleteAll(todoList);
+    renderList()
+})
+
+
+
+
+
+const markAll = (todoList) => {
+    for (let todo of todoList) {
+        if(list.children[0].children[0].classList.contains('done')){
+            todo.checked = true;
+            document.querySelectorAll('.check').forEach((e)=>e.checked=true)
+        }else {
+            todo.checked = false;
+        }
+    }
+}
+
+const deleteAll = (todoList)=>{
+    
+    for(item of todoList){
+        if(item.checked===true){
+            todoList.pop(item);
+            pageCount = Math.ceil(todoList.length / 10);
+            if (currentPage > pageCount) {
+                currentPage = pageCount
+            }
+            renderList();
+        }
+    }
+}
+
 
 function addToList(e) {
-    if(e.type === 'click' || e.keyCode === 13){
+    if (e.type === 'click' || e.keyCode === 13) {
         if (field.value && field.value.trim().length !== 0) {
             todoList.push({
                 name: field.value,
                 checked: false,
                 id: Date.now()
             });
-    
+
             pageCount = Math.ceil(todoList.length / 10);
             currentPage = Math.ceil(todoList.length / 10);
             renderList();
             field.value = '';
         }
-    
+
     }
 }
 
@@ -43,7 +86,7 @@ const renderList = () => {
         const span = document.createElement('span');
         span.innerHTML = item.name;
         li.append(span)
-        checkBtn(li);
+        checkBtn(li, item);
         editBtn(li, item);
         removeBtn(li, item.id);
     })
@@ -71,17 +114,19 @@ const createPages = (pages) => {
 }
 
 
-const checkBtn = (element) => {
+const checkBtn = (element, item) => {
     const check = document.createElement('input');
     check.setAttribute('type', 'checkbox');
     check.classList.add('check')
     element.append(check)
     check.addEventListener('change', function () {
-        if (check.checked) {
+        if (check.checked || item.checked) {
             element.children[0].classList.add('done')
+            item.checked = true;
 
         } else {
             element.children[0].classList.remove('done')
+            item.checked = false;
         }
     })
 }
