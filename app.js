@@ -122,8 +122,11 @@ const removeBtn = (element, id) => {
         console.log(list.children.length)
         if (list.children.length < 1) {
             currentPage = currentPage - 1;
+            pageCount = pageCount - 1;
+            console.log('pagecount ==== ',pageCount)
             renderList();
             pagination.children[paginationLength - 1].remove();
+            
         }
     })
 
