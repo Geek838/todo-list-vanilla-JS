@@ -1,7 +1,6 @@
 const field = document.querySelector('#field');
 const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
-const pages = document.querySelectorAll('.pagination button');
 
 let todoList = [];
 let pageCount = 1;
@@ -9,19 +8,28 @@ let currentPage = 1;
 
 
 
-addBtn.addEventListener('click', () => {
-    if (field.value && field.value.trim().length !== 0) {
-        todoList.push({
-            name: field.value,
-            checked: false,
-            id: Date.now()
-        });
+addBtn.addEventListener('click', addToList)
 
-        pageCount = Math.ceil(todoList.length / 10);
-        currentPage = Math.ceil(todoList.length / 10);
-        renderList();
+field.addEventListener('keyup', addToList)
+
+
+function addToList(e) {
+    if(e.type === 'click' || e.keyCode === 13){
+        if (field.value && field.value.trim().length !== 0) {
+            todoList.push({
+                name: field.value,
+                checked: false,
+                id: Date.now()
+            });
+    
+            pageCount = Math.ceil(todoList.length / 10);
+            currentPage = Math.ceil(todoList.length / 10);
+            renderList();
+            field.value = '';
+        }
+    
     }
-})
+}
 
 const renderList = () => {
     const start = (currentPage - 1) * 10;
@@ -89,7 +97,7 @@ const editBtn = (element, listItem) => {
     editInput.style.display = 'none';
     edit.addEventListener('click', () => {
         element.children[0].style.display = 'none';
-        element.children[1].style.display = "none"
+        element.children[1].style.display = 'none'
         editInput.style.display = 'inline-block';
         editInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
@@ -99,7 +107,7 @@ const editBtn = (element, listItem) => {
                 }
                 element.children[0].style.display = '';
                 editInput.style.display = 'none';
-                element.children[1].style.display = ""
+                element.children[1].style.display = ''
             }
         })
 
@@ -115,19 +123,11 @@ const removeBtn = (element, id) => {
     remove.innerHTML = 'remove';
     element.append(remove)
     remove.addEventListener('click', () => {
-        const paginationLength = document.querySelector('.pagination').children.length;
-        const pagination = document.querySelector('.pagination')
         todoList = todoList.filter(item => item.id !== id);
-        renderList();
-        console.log(list.children.length)
-        if (list.children.length < 1) {
-            currentPage = currentPage - 1;
-            pageCount = pageCount - 1;
-            console.log('pagecount ==== ',pageCount)
-            renderList();
-            pagination.children[paginationLength - 1].remove();
-            
+        pageCount = Math.ceil(todoList.length / 10);
+        if (currentPage > pageCount) {
+            currentPage = pageCount
         }
+        renderList();
     })
-
 };
