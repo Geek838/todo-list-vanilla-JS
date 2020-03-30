@@ -3,27 +3,62 @@ const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
 
 let todoList = [];
-let pageCount = Math.ceil(todoList.length/10);
+let pageCount = 0;
+
 
 addBtn.addEventListener('click', () => {
-    
-
-    if(field.value || field.value.trim()!=0){
+    if (field.value || field.value.trim() != 0) {
         todoList.push({
             name: field.value,
             checked: false,
             id: todoList.length + 1
         });
-        renderList(0,10);
-
+        // field.value = '';
+        if (todoList.length === 0) {
+            pageCount = 1;
+        } else {
+            pageCount = Math.ceil(todoList.length / 10);
+        }
+        console.log(pageCount)
+        createPages();
     }
-    
 })
 
-const renderList = (start,end) => {
+const createPages = () => {
+    const pagination = document.querySelector('.pagination')
+    if (todoList.length % 10 === 0) {
+        const page = document.createElement('button');
+        page.innerHTML = pageCount;
+        pagination.append(page);
+    }
+    eachPage();
+
+}
+
+const eachPage = () => {
+    const pages = document.querySelectorAll('.pagination button');
+    if (pages.length <= 1) {
+        renderList(0, 10)
+    } else {
+        pages.forEach((page) => {
+                const start = Number(page.innerHTML) * 10;
+                const end = start + 10;
+                renderList(start, end);
+                page.addEventListener('click',()=>{
+                    renderList(start, end);
+                })
+        })
+    }
+
+}
+
+const renderList = (start, end) => {
     list.innerHTML = ''
-    todoList.slice(start,end).forEach((item) => {
+    todoList.slice(start, end).forEach((item) => {
         const li = document.createElement('li');
+        let id = Math.floor(Math.random()*10000)
+        li.classList.add(id);
+        todoList[todoList.length -1].id=id;
         list.append(li);
         const span = document.createElement('span');
         span.innerHTML = item.name;
@@ -33,7 +68,7 @@ const renderList = (start,end) => {
         removeBtn(li);
 
     })
-    
+
 
 }
 
@@ -73,6 +108,12 @@ const editBtn = (element) => {
         editInput.addEventListener('keyup', (e) => {
             if (e.keyCode == 13) {
                 if (editInput.value.trim() != 0) {
+                    for(dos of todoList){
+                        if(Object.values(dos)[2] === Number(element.className)){
+                            dos.name = editInput.value;
+                        }
+                        }
+                    
                     element.children[0].innerHTML = editInput.value;
                 }
                 element.children[0].style.display = '';
@@ -96,8 +137,14 @@ const removeBtn = (element) => {
     remove.addEventListener('click', () => {
         element.parentNode.removeChild(element);
         todoList.pop(todoList.length - 1)
-    })
-    
+        if(list.children.length === 0 && pageCount != 1){
+                const pagination = document.querySelector('.pagination');
+                const pages = document.querySelectorAll('.pagination button');
+                pagination.children[pages.length - 1].remove();
+                pageCount--;
+            }      
+    }) 
+
 }
 
 
