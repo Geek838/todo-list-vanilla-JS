@@ -37,7 +37,7 @@ const renderList = () => {
         li.append(span)
         checkBtn(li);
         editBtn(li, item);
-        removeBtn(li, item.id, idx);
+        removeBtn(li, item.id);
     })
     createPages(pageCount);
     const allButtons = document.querySelectorAll('.pagination button')
@@ -109,7 +109,7 @@ const editBtn = (element, listItem) => {
 
 }
 
-const removeBtn = (element, id, idx) => {
+const removeBtn = (element, id) => {
     const remove = document.createElement('button');
     remove.classList.add('remove');
     remove.innerHTML = 'remove';
