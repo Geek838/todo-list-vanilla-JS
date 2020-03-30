@@ -1,80 +1,66 @@
 const field = document.querySelector('#field');
 const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
+const pages = document.querySelectorAll('.pagination button');
 
 let todoList = [];
-let pageCount = 0;
+let pageCount = 1;
+let currentPage = 1;
+
 
 
 addBtn.addEventListener('click', () => {
-    if (field.value || field.value.trim() != 0) {
+    if (field.value && field.value.trim().length !== 0) {
         todoList.push({
             name: field.value,
             checked: false,
-            id: todoList.length + 1
+            id: Date.now()
         });
-        // field.value = '';
-        if (todoList.length === 0) {
-            pageCount = 1;
-        } else {
-            pageCount = Math.ceil(todoList.length / 10);
-        }
-        console.log(pageCount)
-        createPages();
+
+        pageCount = Math.ceil(todoList.length / 10);
+        currentPage = Math.ceil(todoList.length / 10);
+        renderList();
     }
 })
 
-const createPages = () => {
-    const pagination = document.querySelector('.pagination')
-    if (todoList.length % 10 === 0) {
-        const page = document.createElement('button');
-        page.innerHTML = pageCount;
-        pagination.append(page);
-    }
-    eachPage();
-
-}
-
-const eachPage = () => {
-    const pages = document.querySelectorAll('.pagination button');
-    if (pages.length <= 1) {
-        renderList(0, 10)
-    } else {
-        pages.forEach((page) => {
-                const start = Number(page.innerHTML) * 10;
-                const end = start + 10;
-                renderList(start, end);
-                page.addEventListener('click',()=>{
-                    renderList(start, end);
-                })
-        })
-    }
-
-}
-
-const renderList = (start, end) => {
+const renderList = () => {
+    const start = (currentPage - 1) * 10;
+    const end = (currentPage - 1) * 10 + 10;
     list.innerHTML = ''
-    todoList.slice(start, end).forEach((item) => {
+    todoList.slice(start, end).forEach((item, idx) => {
         const li = document.createElement('li');
-        let id = Math.floor(Math.random()*10000)
+        let id = item.id;
         li.classList.add(id);
-        todoList[todoList.length -1].id=id;
         list.append(li);
         const span = document.createElement('span');
         span.innerHTML = item.name;
         li.append(span)
         checkBtn(li);
-        editBtn(li);
-        removeBtn(li);
-
+        editBtn(li, item);
+        removeBtn(li, item.id, idx);
     })
-
+    createPages(pageCount);
+    const allButtons = document.querySelectorAll('.pagination button')
+    allButtons.forEach(e => {
+        e.addEventListener('click', () => {
+            list.innerHTML = ''
+            currentPage = Number(e.innerHTML);
+            renderList();
+        })
+    })
 
 }
 
-// const check = document.querySelector('.check')
-// const edit = document.querySelector('.edit')
-// const remove = document.querySelector('.remove')
+const createPages = (pages) => {
+    const pagination = document.querySelector('.pagination')
+    pagination.innerHTML = '';
+    for (let i = 0; i < pages; i++) {
+        const page = document.createElement('button');
+        page.innerHTML = i + 1;
+        pagination.append(page);
+    }
+
+}
 
 
 const checkBtn = (element) => {
@@ -92,7 +78,7 @@ const checkBtn = (element) => {
     })
 }
 
-const editBtn = (element) => {
+const editBtn = (element, listItem) => {
     const edit = document.createElement('button');
     edit.classList.add('edit')
     edit.innerHTML = 'edit';
@@ -106,14 +92,9 @@ const editBtn = (element) => {
         element.children[1].style.display = "none"
         editInput.style.display = 'inline-block';
         editInput.addEventListener('keyup', (e) => {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 if (editInput.value.trim() != 0) {
-                    for(dos of todoList){
-                        if(Object.values(dos)[2] === Number(element.className)){
-                            dos.name = editInput.value;
-                        }
-                        }
-                    
+                    listItem.name = editInput.value;
                     element.children[0].innerHTML = editInput.value;
                 }
                 element.children[0].style.display = '';
@@ -122,205 +103,28 @@ const editBtn = (element) => {
             }
         })
 
-
     })
     element.append(edit);
 
 
 }
 
-const removeBtn = (element) => {
+const removeBtn = (element, id, idx) => {
     const remove = document.createElement('button');
     remove.classList.add('remove');
     remove.innerHTML = 'remove';
     element.append(remove)
     remove.addEventListener('click', () => {
-        element.parentNode.removeChild(element);
-        todoList.pop(todoList.length - 1)
-        if(list.children.length === 0 && pageCount != 1){
-                const pagination = document.querySelector('.pagination');
-                const pages = document.querySelectorAll('.pagination button');
-                pagination.children[pages.length - 1].remove();
-                pageCount--;
-            }      
-    }) 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function add(e) {
-//     if (e.keyCode == 13 || e.type == 'click') {
-//         if (field.value.trim() != 0) {
-//             let lis = document.querySelectorAll('#list li');
-
-//             if (lis.length <= 10) {
-//                 let item = document.createElement('li');
-//                 list.append(item);
-//                 let span = document.createElement('span');
-//                 span.innerHTML = field.value;
-//                 item.append(span)
-//                 let checkBtn = document.createElement('input');
-//                 let editBtn = document.createElement('button');
-//                 let editInput = document.createElement('input');
-//                 let rmvBtn = document.createElement('button')
-//                 Check();
-//                 edit();
-//                 remove();
-
-
-
-
-//                 function remove() {
-//                     rmvBtn.classList.add('remove');
-//                     rmvBtn.innerHTML = 'remove';
-//                     rmvBtn.addEventListener('click', () => {
-//                         item.parentNode.removeChild(item);
-//                     })
-//                     item.append(rmvBtn);
-//                 }
-
-//                 function edit() {
-//                     editBtn.innerHTML = 'edit';
-//                     editInput.setAttribute('type', 'text');
-//                     item.append(editInput)
-//                     editInput.style.display = 'none';
-//                     editBtn.addEventListener('click', () => {
-//                         span.style.display = 'none';
-//                         checkBtn.style.display = "none"
-//                         editInput.style.display = 'inline-block';
-//                         editInput.addEventListener('keyup', (e) => {
-//                             if (e.keyCode == 13) {
-//                                 if (editInput.value.trim() != 0) {
-//                                     span.innerHTML = editInput.value;
-//                                 }
-//                                 span.style.display = '';
-//                                 editInput.style.display = 'none';
-//                                 checkBtn.style.display = ""
-//                             }
-//                         })
-
-
-//                     })
-//                     item.append(editBtn);
-//                 }
-
-//                 function Check() {
-//                     checkBtn.setAttribute('type', 'checkbox');
-//                     item.append(checkBtn);
-//                     checkBtn.addEventListener('change', () => {
-//                         if (checkBtn.checked) {
-//                             span.classList.add('done')
-//                         } else {
-//                             span.classList.remove('done');
-//                         }
-//                     })
-//                 }
-
-
-
-
-//                 field.value = '';
-
-
-//             }
-//             else {
-
-//                 lis.forEach((e)=>{
-//                     pageOne.push(e);
-//                 })
-//                 let pagination = document.querySelectorAll('.pagination button');
-//                 let nextPage = document.createElement('button');
-//                 nextPage.classList.add('next');
-//                 nextPage.innerHTML = pagination.length +1 ;
-//                 document.querySelector('.pagination').append(nextPage);
-//                 if(pagination.length>1){
-//                     nextPage.parentNode.removeChild(nextPage)
-//                 }
-//                 nextPage.addEventListener('click',()=>{
-//                     lis.forEach((e)=>{
-//                         e.parentNode.removeChild(e);
-//                     })
-//                 })
-//                 document.querySelector('.pagi').addEventListener('click',()=>{
-//                     pageOne.forEach((e)=>{
-//                         lis.forEach((e)=>{
-//                             e.parentNode.removeChild(e);
-//                         })
-//                         list.append(e);
-
-
-//                     })
-//                 })
-
-
-
-//             }
-
-//         }
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-// function pagination(e){
-//     if(e.keyCode===13){
-//         let items = document.querySelectorAll('#list li')
-//         if (items.length> 10 && !document.querySelector('.next')){
-//             let nextPage = document.createElement('button');
-//             nextPage.classList.add('next')
-//             nextPage.innerText = 'next page';
-//             document.querySelector('.pagination').append(nextPage);
-
-//             let list2 = 
-
-
-//         }
-//     }
-
-// }
-
-// document.addEventListener('keyup',pagination)
+        const paginationLength = document.querySelector('.pagination').children.length;
+        const pagination = document.querySelector('.pagination')
+        todoList = todoList.filter(item => item.id !== id);
+        renderList();
+        console.log(list.children.length)
+        if (list.children.length < 1) {
+            currentPage = currentPage - 1;
+            renderList();
+            pagination.children[paginationLength - 1].remove();
+        }
+    })
+
+};
