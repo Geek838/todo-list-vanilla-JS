@@ -44,7 +44,6 @@ body .todo-list {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 400px;
   width: 600px;
   overflow-y: auto;
 }

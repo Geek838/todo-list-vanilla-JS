@@ -32,16 +32,12 @@ checkAll.addEventListener('click', () => {
 
 
 const markAll = (todoList) => {
-    for (let todo of todoList) {
-        todo.checked = true;
-        todoList = todoList.filter(item => item.checked !== false);
-    }
+    todoList = todoList.map(item => {
+        item.checked = true;
+        return item
+    });
     renderList();
-    document.querySelectorAll('span').forEach((e)=>e.classList.toggle('done'))
-    document.querySelectorAll('.check').forEach((e) => e.checked = true)
-
 }
-
 
 
 function addToList(e) {
@@ -76,6 +72,17 @@ const renderList = () => {
         checkBtn(li, item);
         editBtn(li, item);
         removeBtn(li, item.id);
+        if(item.checked){
+            span.classList.add('done');
+            document.querySelectorAll('.check').forEach(e=>{
+                e.checked = true   
+            })
+        }else {
+            span.classList.remove('done');
+            document.querySelectorAll('.check').forEach(e=>{
+                e.checked = false;
+            })
+        }
     })
     createPages(pageCount);
     const allButtons = document.querySelectorAll('.pagination button')
