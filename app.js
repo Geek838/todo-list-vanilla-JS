@@ -1,7 +1,7 @@
 const field = document.querySelector('#field');
 const addBtn = document.querySelector('#add');
 const list = document.querySelector('#list');
-const check = document.querySelector('#complete')
+const checkAll = document.querySelector('#complete')
 const deleteMarked = document.querySelector('#delete');
 
 let todoList = [];
@@ -23,7 +23,7 @@ deleteMarked.addEventListener('click', () => {
     renderList();
 })
 
-check.addEventListener('click', () => {
+checkAll.addEventListener('click', () => {
     for (child of list.children) {
         child.children[0].classList.toggle('done');
     }
@@ -88,6 +88,7 @@ const renderList = () => {
             list.innerHTML = ''
             currentPage = Number(e.innerHTML);
             renderList();
+            markAll(todoList)
         })
     })
 
@@ -111,7 +112,7 @@ const checkBtn = (element, item) => {
     check.classList.add('check')
     element.append(check)
     check.addEventListener('change', function () {
-        if (check.checked || item.checked) {
+        if (check.checked) {
             element.children[0].classList.add('done')
             item.checked = true;
 
