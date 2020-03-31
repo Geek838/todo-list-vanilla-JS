@@ -14,6 +14,15 @@ addBtn.addEventListener('click', addToList)
 
 field.addEventListener('keyup', addToList)
 
+deleteMarked.addEventListener('click', () => {
+    todoList = todoList.filter(item => item.checked !== true);
+    pageCount = Math.ceil(todoList.length / 10);
+    if (currentPage > pageCount) {
+        currentPage = pageCount
+    }
+    renderList();
+})
+
 check.addEventListener('click', () => {
     for (child of list.children) {
         child.children[0].classList.toggle('done');
@@ -21,39 +30,22 @@ check.addEventListener('click', () => {
     markAll(todoList);
 });
 
-deleteMarked.addEventListener('click',()=>{
-    deleteAll(todoList);
-    renderList()
-})
-
 
 
 
 
 const markAll = (todoList) => {
     for (let todo of todoList) {
-        if(list.children[0].children[0].classList.contains('done')){
+        if (list.children[0].children[0].classList.contains('done')) {
             todo.checked = true;
-            document.querySelectorAll('.check').forEach((e)=>e.checked=true)
-        }else {
+            document.querySelectorAll('.check').forEach((e) => e.checked = true)
+        } else {
             todo.checked = false;
+            document.querySelectorAll('.check').forEach((e) => e.checked = false)
         }
     }
 }
 
-const deleteAll = (todoList)=>{
-    
-    for(item of todoList){
-        if(item.checked===true){
-            todoList.pop(item);
-            pageCount = Math.ceil(todoList.length / 10);
-            if (currentPage > pageCount) {
-                currentPage = pageCount
-            }
-            renderList();
-        }
-    }
-}
 
 
 function addToList(e) {
@@ -64,7 +56,6 @@ function addToList(e) {
                 checked: false,
                 id: Date.now()
             });
-
             pageCount = Math.ceil(todoList.length / 10);
             currentPage = Math.ceil(todoList.length / 10);
             renderList();
