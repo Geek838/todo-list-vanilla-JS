@@ -24,9 +24,6 @@ deleteMarked.addEventListener('click', () => {
 })
 
 checkAll.addEventListener('click', () => {
-    for (child of list.children) {
-        child.children[0].classList.toggle('done');
-    }
     markAll(todoList);
 });
 
@@ -36,14 +33,13 @@ checkAll.addEventListener('click', () => {
 
 const markAll = (todoList) => {
     for (let todo of todoList) {
-        if (list.children[0].children[0].classList.contains('done')) {
-            todo.checked = true;
-            document.querySelectorAll('.check').forEach((e) => e.checked = true)
-        } else {
-            todo.checked = false;
-            document.querySelectorAll('.check').forEach((e) => e.checked = false)
-        }
+        todo.checked = true;
+        todoList = todoList.filter(item => item.checked !== false);
     }
+    renderList();
+    document.querySelectorAll('span').forEach((e)=>e.classList.toggle('done'))
+    document.querySelectorAll('.check').forEach((e) => e.checked = true)
+
 }
 
 
@@ -69,7 +65,7 @@ const renderList = () => {
     const start = (currentPage - 1) * 10;
     const end = (currentPage - 1) * 10 + 10;
     list.innerHTML = ''
-    todoList.slice(start, end).forEach((item, idx) => {
+    todoList.slice(start, end).forEach((item) => {
         const li = document.createElement('li');
         let id = item.id;
         li.classList.add(id);
@@ -88,7 +84,6 @@ const renderList = () => {
             list.innerHTML = ''
             currentPage = Number(e.innerHTML);
             renderList();
-            markAll(todoList)
         })
     })
 
