@@ -32,11 +32,25 @@ checkAll.addEventListener('click', () => {
 
 
 const markAll = (todoList) => {
-    todoList = todoList.map(item => {
-        item.checked = true;
-        return item
-    });
-    renderList();
+    if (todoList.every(isChecked)) {
+        todoList = todoList.map(item => {
+            item.checked = false;
+            return item
+        });
+        checkAll.innerHTML = 'Complete All'
+        renderList();
+    } else {
+        todoList = todoList.map(item => {
+            item.checked = true;
+            return item
+        });
+        checkAll.innerHTML = 'Uncheck All'
+        renderList();
+    }
+
+    function isChecked(check) {
+        return check.checked === true;
+    }
 }
 
 
@@ -72,14 +86,14 @@ const renderList = () => {
         checkBtn(li, item);
         editBtn(li, item);
         removeBtn(li, item.id);
-        if(item.checked){
+        if (item.checked) {
             span.classList.add('done');
-            document.querySelectorAll('.check').forEach(e=>{
-                e.checked = true   
+            document.querySelectorAll('.check').forEach(e => {
+                e.checked = true
             })
-        }else {
+        } else {
             span.classList.remove('done');
-            document.querySelectorAll('.check').forEach(e=>{
+            document.querySelectorAll('.check').forEach(e => {
                 e.checked = false;
             })
         }
