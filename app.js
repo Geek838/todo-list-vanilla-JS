@@ -72,6 +72,9 @@ function addToList(e) {
 }
 
 const renderList = () => {
+    if (todoList.length === 0) {
+        checkAll.innerHTML = 'Complete all'
+    }
     const start = (currentPage - 1) * 10;
     const end = (currentPage - 1) * 10 + 10;
     list.innerHTML = ''
@@ -82,6 +85,7 @@ const renderList = () => {
         list.append(li);
         const span = document.createElement('span');
         span.innerHTML = item.name;
+        span.classList.add('text')
         li.append(span)
         checkBtn(li, item);
         editBtn(li, item);
@@ -141,7 +145,8 @@ const checkBtn = (element, item) => {
 
 const editBtn = (element, listItem) => {
     const edit = document.createElement('button');
-    edit.classList.add('edit')
+    let classesToAdd = ['edit', 'btn', 'btn-warning']
+    edit.classList.add(...classesToAdd)
     edit.innerHTML = 'edit';
     element.append(edit);
     const editInput = document.createElement('input');
@@ -172,7 +177,8 @@ const editBtn = (element, listItem) => {
 
 const removeBtn = (element, id) => {
     const remove = document.createElement('button');
-    remove.classList.add('remove');
+    let classesToAdd = ['remove', 'btn', 'btn-danger']
+    remove.classList.add(...classesToAdd);
     remove.innerHTML = 'remove';
     element.append(remove)
     remove.addEventListener('click', () => {

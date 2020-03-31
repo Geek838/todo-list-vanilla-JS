@@ -7,69 +7,25 @@ body {
   background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
 }
 
-body * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-body h2 {
-  text-align: center;
-  font-family: "Montserrat", sans-serif;
-  margin-top: 50px;
-}
-
-body button {
-  background-color: #5FFBF1;
-  border-radius: 10%;
-  border: none;
-  font-size: 18px;
-  margin: 0 2px;
-}
-
-body .todo-list {
-  margin: 0 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 600px;
-  overflow-y: auto;
-}
-
-body .todo-list ul {
+body .todo-list #list {
   list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-body .todo-list ul li {
-  min-width: 10%;
-  max-width: 30%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 20px 10px 0;
-  text-align: center;
-}
-
-body .todo-list ul span {
-  font-family: "Montserrat", sans-serif;
 }
 
 body .todo-list .done {
   text-decoration: line-through;
+}
+
+body .todo-list .romove,
+body .todo-list .edit {
+  margin: 10px 5px 10px;
+}
+
+body .todo-list .text {
+  font-size: 1.5rem;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border-bottom: 1px solid teal;
 }
 
 body .todo-list .current {
